@@ -1,15 +1,14 @@
 package com.andgivemarketing.problemmaker.service;
 
 import com.andgivemarketing.problemmaker.dto.ProblemDTO;
-import com.andgivemarketing.problemmaker.dto.ProblemWithUnitDTO;
 import com.andgivemarketing.problemmaker.entity.ProblemEntity;
 import com.andgivemarketing.problemmaker.repository.ProblemRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,12 +17,12 @@ public class ProblemService {
     private final ProblemRepository problemRepository;
 
     // 문제 생성 또는 수정
-    public void save(ProblemEntity problemEntity){
+    public void save(ProblemEntity problemEntity) {
         problemRepository.save(problemEntity);
     }
 
     // 문제 삭제
-    public void delete(Long id){
+    public void delete(Long id) {
         problemRepository.deleteById(id);
     }
 
@@ -33,7 +32,7 @@ public class ProblemService {
     }
 
     // 랜덤 문제들 조회
-    public List<ProblemWithUnitDTO> findRandomProblems(Long unitId, int count) {
+    public List<ProblemDTO> findRandomProblems(Long unitId, int count) {
 
         // DTO는 클라이언트와 주고 받는 객체 (외부와 소통)
         // Entity는 DB 조회를 위한 객체 (내부에서만)
@@ -67,21 +66,30 @@ public class ProblemService {
         //     - setter를 남발하여 코드가 더럽고 길다.
 
         // 단원 id에 해당하는 문제들 조회
-        List<ProblemWithUnitDTO> problemWithUnitDTOList = findByUnitId(unitId);
+        List<ProblemDTO> problemEntities = findByUnitId(unitId).stream().map(this::parseDTO).toList();
 
-        // 랜덤 순서
-        Collections.shuffle(problemWithUnitDTOList);
-        
-        // 랜덤 순서로 된 리스트에서 원하는 만큼 잘라내기
-        // count가 조회된 문제 수보다 높으면 안되기 때문에 Math.min 사용
-        problemWithUnitDTOList = problemWithUnitDTOList.subList(0, Math.min(count, problemWithUnitDTOList.size()));
+        Collections.shuffle(problemEntities);
 
-        return problemWithUnitDTOList;
+        problemEntities = problemEntities.stream().limit(count).toList();
+
+        return problemEntities;
     }
 
     // 단원 id로 문제들 조회
-    public List<ProblemWithUnitDTO> findByUnitId(Long unitId) {
+    public List<ProblemEntity> findByUnitId(Long unitId) {
         return problemRepository.findByUnitId(unitId);
     }
+
+    public ProblemDTO parseDTO(ProblemEntity problemEntity) {
+        ProblemDTO problemDTO = new ProblemDTO();
+        problemDTO.setId(problemEntity.getId());
+        problemDTO.setTitle(problemEntity.getTitle());
+        problemDTO.setAnswer(problemEntity.getAnswer());
+        problemDTO.setUnitId(problemEntity.getUnitId());
+        problemDTO.setCreateAt(problemEntity.getCreateAt());
+        problemDTO.setUpdateAt(problemEntity.getUpdateAt());
+        return problemDTO;
+    }
+
 
 }

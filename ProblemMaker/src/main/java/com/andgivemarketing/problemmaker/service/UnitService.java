@@ -2,6 +2,7 @@ package com.andgivemarketing.problemmaker.service;
 
 import com.andgivemarketing.problemmaker.entity.UnitEntity;
 import com.andgivemarketing.problemmaker.repository.UnitRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -34,11 +34,11 @@ public class UnitController {
 
     // 단원 생성
     @PostMapping("/unit")
-    public ResponseEntity<?> createUnit(@RequestBody(required = false)UnitDTO unitDTO) {
+    public ResponseEntity<?> createUnit(@RequestBody(required = false) UnitDTO unitDTO) {
 
         // 입력받은 단원 빈 값 체크
         if (unitDTO == null
-                || unitDTO.getName() == null || unitDTO.getName().isBlank()){
+                || unitDTO.getName() == null || unitDTO.getName().isBlank()) {
             return ResponseEntity.status(400).body(new ErrorResponse(new ErrorResponse.ErrorDetails("올바르지 않은 이름입니다")));
         }
         String name = unitDTO.getName();
@@ -46,17 +46,10 @@ public class UnitController {
         // 이름 중복 체크
         UnitEntity unitEntity = unitService.findByName(name);
 
-        if (unitEntity != null){
+        if (unitEntity != null) {
             return ResponseEntity.status(404).body(new ErrorResponse(new ErrorResponse.ErrorDetails("이미 존재하는 이름입니다")));
         }
 
-        // 잘못된 코드
-        //unitEntity = new UnitEntity();
-        //unitEntity.setName(unitDTO.getName());
-        //unitEntity.setCreateAt(LocalDateTime.now());
-
-        // UnitEntity의 @NoArgsConstructor(access = AccessLevel.PROTECTED)로 인해
-        // build() 활용
         unitEntity = UnitEntity.builder()
                 .name(unitDTO.getName())
                 .createAt(LocalDateTime.now())
@@ -68,13 +61,13 @@ public class UnitController {
     }
 
     // 단원 수정
-    @PutMapping("/unit")
-    public ResponseEntity<?> updateUnitName(@RequestBody(required = false)UnitDTO unitDTO) {
+    @PutMapping("/unit/update/name")
+    public ResponseEntity<?> updateUnitName(@RequestBody(required = false) UnitDTO unitDTO) {
 
         // 입력받은 단원 빈 값 체크
         if (unitDTO == null
                 || unitDTO.getId() == null
-                || unitDTO.getName() == null || unitDTO.getName().isBlank()){
+                || unitDTO.getName() == null || unitDTO.getName().isBlank()) {
             return ResponseEntity.status(400).body(new ErrorResponse(new ErrorResponse.ErrorDetails("올바르지 않은 요청입니다")));
         }
 
@@ -89,22 +82,20 @@ public class UnitController {
 
         // 이름 중복 체크
         UnitEntity duplicateCheckEntity = unitService.findByName(name);
-        if (duplicateCheckEntity != null && !duplicateCheckEntity.getId().equals(id)){ // 본인 id에 해당하는 단원과 같은 이름으로 입력할 시 허용
+        if (duplicateCheckEntity != null && !duplicateCheckEntity.getId().equals(id)) { // 본인 id에 해당하는 단원과 같은 이름으로 입력할 시 허용
             return ResponseEntity.status(404).body(new ErrorResponse(new ErrorResponse.ErrorDetails("이미 존재하는 이름입니다")));
         }
 
-        unitEntity.changeName(name);
+        unitEntity.setName(name);
+        unitService.save(unitEntity);
 
-        // 수정같은 경우에는 영속성 컨텍스트로 인해서
-        // 저장하지 않아도 레파지토리에서 알아서 저장해 준다.
-        //unitService.save(unitEntity);
 
         return ResponseEntity.ok().build();
     }
 
     // 단원 삭제
     @DeleteMapping("/unit")
-    public ResponseEntity<?> deleteUnit(@RequestParam(name = "id") Long id) {
+    public ResponseEntity<?> deleteUnit(@RequestParam(name = "id", required = false) Long id) {
 
         if (id == null) {
             return ResponseEntity.status(400).body(new ErrorResponse(new ErrorResponse.ErrorDetails("올바르지 않은 요청입니다")));
