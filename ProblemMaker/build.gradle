@@ -33,6 +33,11 @@ dependencies {
 
     implementation 'com.google.code.gson:gson:2.11.0'
 
+    // Apache POI
+    // 마이크로소프트 오피스 파일 형식(.xlsx, .xls, .docx, .pptx 등)을 읽고 쓰는 기능을 제공
+    implementation 'org.apache.poi:poi:5.2.3'
+    implementation 'org.apache.poi:poi-ooxml:5.2.3'
+
 }
 
 tasks.named('test') {

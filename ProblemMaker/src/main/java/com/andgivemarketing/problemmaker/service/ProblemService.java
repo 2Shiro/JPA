@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -66,7 +67,7 @@ public class ProblemService {
         //     - setter를 남발하여 코드가 더럽고 길다.
 
         // 단원 id에 해당하는 문제들 조회
-        List<ProblemDTO> problemEntities = findByUnitId(unitId).stream().map(this::parseDTO).toList();
+        List<ProblemDTO> problemEntities = findByUnitId(unitId).stream().map(this::parseDTO).collect(Collectors.toList());
 
         Collections.shuffle(problemEntities);
 

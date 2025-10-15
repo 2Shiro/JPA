@@ -7,6 +7,8 @@ import com.andgivemarketing.problemmaker.entity.UnitEntity;
 import com.andgivemarketing.problemmaker.repository.ProblemRepository;
 import com.andgivemarketing.problemmaker.service.ProblemService;
 import com.andgivemarketing.problemmaker.service.UnitService;
+import com.andgivemarketing.problemmaker.utils.GsonUtils;
+import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -110,7 +112,7 @@ public class ProblemController {
         // count 만큼 문제 조회
         List<ProblemDTO> randomProblems = problemService.findRandomProblems(unitId, count);
 
-        return ResponseEntity.ok().body(randomProblems);
+        return ResponseEntity.ok().body(GsonUtils.gson.toJson(randomProblems));
     }
 
 }
