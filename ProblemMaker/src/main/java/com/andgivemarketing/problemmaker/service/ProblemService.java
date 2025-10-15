@@ -44,10 +44,10 @@ public class ProblemService {
         // 3. JPA Entity의 지연로딩을 통한 N+1 문제를 해결하기 위해 DTO로 변환해서 반환 ★★★★★
         // JPA의 Entity는 OneToMany, OneToOne 같은 연관 관계 설정이 가능하다.
         // JPA에서 DB 조회를 할때 즉시 로딩과 지연 로딩을 설정할 수 있다.
-        // 즉시 로딩 : 연관 관계에 있는 모든 Entity를 함께 조회한다.
-        // user{userId:"aa123", name: "홍길동", userImage: {imageId:"bb22", url:"/user/image/aa.jpg"}}
-        // 지연 로딩 : 최초에는 연관 관계에 있는 Entity를 조회하지 않고, 필요할 때 추가 조회를 자동으로 진행한다.
-        // user{userId:"aa123", name: "홍길동", userImage: null}
+        //  즉시 로딩 : 연관 관계에 있는 모든 Entity를 함께 조회한다.
+        //      user{userId:"aa123", name: "홍길동", userImage: {imageId:"bb22", url:"/user/image/aa.jpg"}}
+        //  지연 로딩 : 최초에는 연관 관계에 있는 Entity를 조회하지 않고, 필요할 때 추가 조회를 자동으로 진행한다.
+        //      user{userId:"aa123", name: "홍길동", userImage: null}
 
         // ResponseEntity를 통해 클라이언트단(프론트)으로 데이터를 반환하는데 표준 양식은 JSON이다.
         // 내부적으로 Entity 객체를 자동으로 JSON 형태로 변형시켜주는데 이 과정을 직렬화라고 부른다.

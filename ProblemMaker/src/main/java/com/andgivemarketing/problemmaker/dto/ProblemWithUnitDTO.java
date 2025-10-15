@@ -1,8 +1,12 @@
 package com.andgivemarketing.problemmaker.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.AllArgsConstructor;
 
-@Data
+import java.time.LocalDateTime;
+
+@Getter
+@AllArgsConstructor
 public class ProblemWithUnitDTO {
 
     private Long id;
@@ -13,4 +17,11 @@ public class ProblemWithUnitDTO {
 
     private String answer;
 
+    public ProblemWithUnitDTO(Long problemId, String title, String answer,
+                              Long unitId, String name, LocalDateTime createAt) {
+        this.id = problemId;
+        this.title = title;
+        this.answer = answer;
+        this.unitDTO = new UnitDTO(unitId, name, createAt);
+    }
 }

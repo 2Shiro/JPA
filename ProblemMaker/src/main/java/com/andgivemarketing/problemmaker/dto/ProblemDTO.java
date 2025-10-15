@@ -1,8 +1,12 @@
 package com.andgivemarketing.problemmaker.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.AllArgsConstructor;
 
-@Data
+import java.time.LocalDateTime;
+
+@Getter
+@AllArgsConstructor
 public class ProblemDTO {
 
     // Primitive type인 long을 사용하지 않고 wrapper type인 Long 쓰는 이유는 Null을 허용해주기 위함인데
@@ -20,8 +24,8 @@ public class ProblemDTO {
 
     private String answer;
 
-    private String createAt;
+    private LocalDateTime createAt;
 
-    private String updateAt;
+    private LocalDateTime updateAt;
 
 }

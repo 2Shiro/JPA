@@ -1,14 +1,18 @@
 package com.andgivemarketing.problemmaker.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.AllArgsConstructor;
 
-@Data
+import java.time.LocalDateTime;
+
+@Getter
+@AllArgsConstructor
 public class UnitDTO {
 
     private Long id;
 
     private String name;
 
-    private String createAt;
+    private LocalDateTime createAt;
 
 }
