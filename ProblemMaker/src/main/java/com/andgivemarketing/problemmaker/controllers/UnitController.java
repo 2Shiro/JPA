@@ -50,9 +50,17 @@ public class UnitController {
             return ResponseEntity.status(404).body(new ErrorResponse(new ErrorResponse.ErrorDetails("이미 존재하는 이름입니다")));
         }
 
-        unitEntity = new UnitEntity();
-        unitEntity.setName(unitDTO.getName());
-        unitEntity.setCreateAt(LocalDateTime.now());
+        // 잘못된 코드
+        //unitEntity = new UnitEntity();
+        //unitEntity.setName(unitDTO.getName());
+        //unitEntity.setCreateAt(LocalDateTime.now());
+
+        // UnitEntity의 @NoArgsConstructor(access = AccessLevel.PROTECTED)로 인해
+        // build() 활용
+        unitEntity = UnitEntity.builder()
+                .name(unitDTO.getName())
+                .createAt(LocalDateTime.now())
+                .build();
 
         unitService.save(unitEntity);
 
@@ -85,8 +93,11 @@ public class UnitController {
             return ResponseEntity.status(404).body(new ErrorResponse(new ErrorResponse.ErrorDetails("이미 존재하는 이름입니다")));
         }
 
-        unitEntity.setName(name);
-        unitService.save(unitEntity);
+        unitEntity.changeName(name);
+
+        // 수정같은 경우에는 영속성 컨텍스트로 인해서
+        // 저장하지 않아도 레파지토리에서 알아서 저장해 준다.
+        //unitService.save(unitEntity);
 
         return ResponseEntity.ok().build();
     }
