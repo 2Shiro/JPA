@@ -3,7 +3,6 @@ package com.andgivemarketing.problemmaker.service;
 import com.andgivemarketing.problemmaker.dto.ProblemDTO;
 import com.andgivemarketing.problemmaker.entity.ProblemEntity;
 import com.andgivemarketing.problemmaker.repository.ProblemRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -67,13 +66,13 @@ public class ProblemService {
         //     - setter를 남발하여 코드가 더럽고 길다.
 
         // 단원 id에 해당하는 문제들 조회
-        List<ProblemDTO> problemEntities = findByUnitId(unitId).stream().map(this::parseDTO).collect(Collectors.toList());
+        List<ProblemDTO> problemDTOS = findByUnitId(unitId).stream().map(this::parseDTO).collect(Collectors.toList());
 
-        Collections.shuffle(problemEntities);
+        Collections.shuffle(problemDTOS);
 
-        problemEntities = problemEntities.stream().limit(count).toList();
+        problemDTOS = problemDTOS.stream().limit(count).toList();
 
-        return problemEntities;
+        return problemDTOS;
     }
 
     // 단원 id로 문제들 조회
